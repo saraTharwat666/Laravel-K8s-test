@@ -1,10 +1,10 @@
-# 🚀 Laravel K8s — Monitoring Stack
+#  Laravel K8s — Monitoring Stack
 
 A Laravel application deployed with full observability, running on Docker Compose for development and Kubernetes (minikube) for production-like environments.
 
 ---
 
-## 📦 Stack
+## Stack
 
 | Service | Description |
 |---|---|
