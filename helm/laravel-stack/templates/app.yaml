@@ -12,16 +12,16 @@ spec:
     metadata:
       labels:
         app: laravel
-      annotations:
+  annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/role: "laravel"
         vault.hashicorp.com/agent-inject-secret-db: "secret/data/laravel/db"
         vault.hashicorp.com/agent-inject-template-db: |
-          {{- with secret "secret/data/laravel/db" -}}
-          export DB_PASSWORD="{{ .Data.data.password }}"
-          export DB_USERNAME="{{ .Data.data.username }}"
-          export DB_DATABASE="{{ .Data.data.name }}"
-          {{- end }}
+          {{`{{- with secret "secret/data/laravel/db" -}}`}}
+          export DB_PASSWORD="{{`{{ .Data.data.password }}`}}"
+          export DB_USERNAME="{{`{{ .Data.data.username }}`}}"
+          export DB_DATABASE="{{`{{ .Data.data.name }}`}}"
+          {{`{{- end }}`}}
     spec:
       containers:
         - name: app
