@@ -1,9 +1,8 @@
 # Laravel K8s — Monitoring Stack
 
 ## 🎥 Demo
-
 ### Argo CD Dashboard
-https://github.com/saraTharwat666/Laravel-K8s-test/raw/staging/results/argocd-demo.mp4
+![Argo CD Demo](results/argocd-demo.gif)
 
 A Laravel application deployed with full observability, running on Docker Compose for development and Kubernetes (minikube) for production-like environments. Supports both raw `kubectl` manifests and `Helm` charts.
 
