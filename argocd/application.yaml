@@ -8,7 +8,7 @@ spec:
 
   source:
     repoURL: https://github.com/saraTharwat666/Laravel-K8s-test.git   #Repo URL
-    targetRevision: HEAD     # updated Commits
+    targetRevision: staging     # updated Commits
     path: helm/laravel-stack  # HELM PATH
 
   destination:
