@@ -33,20 +33,11 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: laravel-secrets
-                  key: db-database
+              value: {{ .Values.db.name }}
             - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: laravel-secrets
-                  key: db-username
+              value: {{ .Values.db.username }}
             - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: laravel-secrets
-                  key: db-password
+              value: {{ .Values.db.password }}
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
