@@ -1,4 +1,9 @@
-# 🚀 Laravel K8s — Monitoring Stack
+# Laravel K8s — Monitoring Stack
+
+## 🎥 Demo
+
+### Argo CD Dashboard
+https://github.com/saraTharwat666/Laravel-K8s-test/raw/staging/results/argocd-demo.mp4
 
 A Laravel application deployed with full observability, running on Docker Compose for development and Kubernetes (minikube) for production-like environments. Supports both raw `kubectl` manifests and `Helm` charts.
 
@@ -26,28 +31,27 @@ A Laravel application deployed with full observability, running on Docker Compos
 ```
 laravel-k8s/
 ├── config/
-│   ├── laravel/            # Nginx configuration
-│   └── prometheus/         # Prometheus configuration
+│   ├── laravel/
+│   └── prometheus/
 ├── services/
 │   └── laravel/
 │       ├── Dockerfile
-│       └── src/            # Laravel application
-├── k8s/                    # Raw Kubernetes manifests
-│   ├── namespace.yaml
-│   ├── secrets.yaml
-│   ├── configmap.yaml
-│   ├── app/                # Laravel + Nginx
-│   ├── db/                 # PostgreSQL
-│   ├── redis/
-│   ├── monitoring/         # Prometheus, Grafana & Exporters
-│   └── uptime-kuma/
-├── helm/                   # Helm chart
+│       └── src/
+├── k8s/                      
+├── helm/
 │   └── laravel-stack/
 │       ├── Chart.yaml
 │       ├── values.yaml
 │       └── templates/
+├── vault/                      
+│   ├── config/
+│   │   └── vault.hcl           
+│   └── policies/
+│       └── laravel-policy.hcl  
+├── argocd/                     
+│   └── application.yaml        
 ├── docker-compose.yml
-└── .env.example
+└── README.md
 ```
 
 ---
