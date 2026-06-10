@@ -1,10 +1,10 @@
 apiVersion: v1
-kind: ConfigMap
+kind: ConfigMap  
 metadata:
   name: nginx-config
   namespace: laravel
 data:
-  default.conf: |
+  default.conf: |   #nginx-configmap
     server {
         listen 80;
         root /var/www/html/public;

@@ -1,0 +1,53 @@
+namespace: laravel  #namespace
+
+app:   #laravel-app
+  image: laravel-k8s-app:latest
+  imagePullPolicy: Never
+  replicas: 1
+  key: "base64:DheWUNdiTdis6FjYDu8jk0frkl6jg+815M4aF35tJMQ="
+
+
+#Database-values
+db:
+  image: postgres:15-alpine
+  replicas: 1
+  storage: 5Gi   #PVC
+  name: laravel
+  username: laravel
+  password: secret
+
+#Redis-Values
+redis:
+  image: redis:7-alpine
+  replicas: 1
+
+# Prometheus-Values
+prometheus:
+  image: prom/prometheus:latest
+  replicas: 1
+  storage: 2Gi  #PVC
+
+
+# Grafana-values
+grafana:
+  image: grafana/grafana:latest
+  replicas: 1
+  storage: 1Gi  #PVC
+
+#Uptime-kuma values
+uptimeKuma:
+  image: louislam/uptime-kuma:1
+  replicas: 1
+  storage: 1Gi  #PVC
+
+
+#Exporters-Values
+
+nodeExporter:
+  image: prom/node-exporter:latest
+
+postgresExporter:
+  image: wrouesnel/postgres_exporter:latest
+
+redisExporter:
+  image: oliver006/redis_exporter:latest

@@ -1,10 +1,10 @@
-#  Laravel K8s — Monitoring Stack
+# 🚀 Laravel K8s — Monitoring Stack
 
-A Laravel application deployed with full observability, running on Docker Compose for development and Kubernetes (minikube) for production-like environments.
+A Laravel application deployed with full observability, running on Docker Compose for development and Kubernetes (minikube) for production-like environments. Supports both raw `kubectl` manifests and `Helm` charts.
 
 ---
 
-## Stack
+## 📦 Stack
 
 | Service | Description |
 |---|---|
@@ -15,7 +15,7 @@ A Laravel application deployed with full observability, running on Docker Compos
 | **Prometheus** | Metrics collection |
 | **Grafana** | Metrics visualization |
 | **Uptime Kuma** | Uptime monitoring |
-| **Node Exporter** | Host metrics |
+| **Node Exporter** | Host CPU/memory/disk metrics |
 | **Postgres Exporter** | PostgreSQL metrics |
 | **Redis Exporter** | Redis metrics |
 
@@ -32,15 +32,20 @@ laravel-k8s/
 │   └── laravel/
 │       ├── Dockerfile
 │       └── src/            # Laravel application
-├── k8s/
+├── k8s/                    # Raw Kubernetes manifests
 │   ├── namespace.yaml
 │   ├── secrets.yaml
 │   ├── configmap.yaml
-│   ├── app/                # Laravel + Nginx manifests
-│   ├── db/                 # PostgreSQL manifests
-│   ├── redis/              # Redis manifests
+│   ├── app/                # Laravel + Nginx
+│   ├── db/                 # PostgreSQL
+│   ├── redis/
 │   ├── monitoring/         # Prometheus, Grafana & Exporters
-│   └── uptime-kuma/        # Uptime Kuma manifests
+│   └── uptime-kuma/
+├── helm/                   # Helm chart
+│   └── laravel-stack/
+│       ├── Chart.yaml
+│       ├── values.yaml
+│       └── templates/
 ├── docker-compose.yml
 └── .env.example
 ```
@@ -65,7 +70,11 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
 ```
 
-### 3. Run with Kubernetes (Production-like)
+---
+
+## ☸️ Kubernetes Deployment
+
+### Option A — Raw Manifests (kubectl)
 
 ```bash
 # Start minikube
@@ -88,6 +97,38 @@ kubectl apply -f k8s/uptime-kuma/
 kubectl exec -n laravel deploy/laravel -c app -- php artisan migrate
 ```
 
+### Option B — Helm Chart (recommended)
+
+```bash
+# Start minikube
+minikube start --driver=docker
+
+# Load Laravel image into minikube
+minikube image load laravel-k8s-app:latest
+
+# Install with Helm
+helm install laravel-stack helm/laravel-stack
+
+# Run migrations
+kubectl exec -n laravel deploy/laravel -c app -- php artisan migrate
+```
+
+#### Useful Helm commands
+
+```bash
+# تحديث بعد أي تغيير في values.yaml
+helm upgrade laravel-stack helm/laravel-stack
+
+# مسح كل حاجة
+helm uninstall laravel-stack
+
+# التحقق من الـ chart قبل التطبيق
+helm lint helm/laravel-stack
+
+# معاينة الـ templates قبل التطبيق
+helm template laravel-stack helm/laravel-stack
+```
+
 ---
 
 ## 🌐 Access
@@ -104,7 +145,6 @@ kubectl exec -n laravel deploy/laravel -c app -- php artisan migrate
 ### Kubernetes
 
 ```bash
-# Get minikube IP
 minikube ip
 ```
 
@@ -129,8 +169,11 @@ kubectl logs -n laravel deploy/laravel -c app
 # Run artisan commands
 kubectl exec -n laravel deploy/laravel -c app -- php artisan <command>
 
-# Delete everything
+# Delete everything (kubectl)
 kubectl delete namespace laravel
+
+# Delete everything (helm)
+helm uninstall laravel-stack
 ```
 
 ---
@@ -149,4 +192,24 @@ Import Grafana dashboards:
 
 ---
 
-> Built with ❤️ as a DevOps learning project — Docker Compose → Kubernetes migration.
+## ⚙️ Configuration
+
+All configurable values are in `helm/laravel-stack/values.yaml`:
+
+```yaml
+app:
+  replicas: 1       # scale up هنا
+  image: laravel-k8s-app:latest
+
+db:
+  storage: 5Gi      # حجم الـ database
+  password: secret  # غيري الـ password هنا بس
+
+prometheus:
+  storage: 2Gi
+
+grafana:
+  storage: 1Gi
+```
+
+---
