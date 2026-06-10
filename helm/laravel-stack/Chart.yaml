@@ -4,3 +4,7 @@ description: Laravel application with full monitoring stack
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
+dependencies:
+  - name: vault
+    version: "0.28.0"
+    repository: "https://helm.releases.hashicorp.com"

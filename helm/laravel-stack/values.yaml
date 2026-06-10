@@ -51,3 +51,12 @@ postgresExporter:
 
 redisExporter:
   image: oliver006/redis_exporter:latest
+
+# Vault-values
+vault:
+  server:
+    dev:
+      enabled: true
+      devRootToken: "root"
+  injector:
+    enabled: true

@@ -12,6 +12,16 @@ spec:
     metadata:
       labels:
         app: laravel
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "laravel"
+        vault.hashicorp.com/agent-inject-secret-db: "secret/data/laravel/db"
+        vault.hashicorp.com/agent-inject-template-db: |
+          {{- with secret "secret/data/laravel/db" -}}
+          export DB_PASSWORD="{{ .Data.data.password }}"
+          export DB_USERNAME="{{ .Data.data.username }}"
+          export DB_DATABASE="{{ .Data.data.name }}"
+          {{- end }}
     spec:
       containers:
         - name: app
@@ -25,28 +35,13 @@ spec:
             - name: APP_DEBUG
               value: "true"
             - name: APP_KEY
-              value: {{ .Values.app.key }}   
+              value: {{ .Values.app.key }}
             - name: DB_CONNECTION
               value: "pgsql"
             - name: DB_HOST
               value: "postgres"
             - name: DB_PORT
               value: "5432"
-            - name: DB_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: laravel-secrets
-                  key: db-database
-            - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: laravel-secrets
-                  key: db-username
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: laravel-secrets
-                  key: db-password
             - name: REDIS_HOST
               value: "redis"
             - name: REDIS_PORT
